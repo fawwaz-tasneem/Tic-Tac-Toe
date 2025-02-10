@@ -1,88 +1,112 @@
-// --- HexBoard.cpp ---
+// HexBoard.cpp
 #include "HexBoard.h"
+#include <cmath>
+#include <algorithm>
+#include <iostream>
+#include <cstring>
 
-// Constructor: initialize the board with empty spaces.
-HexBoard::HexBoard() : board(GRID_SIZE, std::vector<char>(GRID_SIZE, ' ')) {}
+HexBoard::HexBoard() {
+    // Generate all valid cells for a hex board with radius BOARD_RADIUS.
+    // Valid axial coordinates satisfy: |q| <= BOARD_RADIUS, |r| <= BOARD_RADIUS, and |q + r| <= BOARD_RADIUS.
+    for (int q = -BOARD_RADIUS; q <= BOARD_RADIUS; q++) {
+        int r1 = std::max(-BOARD_RADIUS, -q - BOARD_RADIUS);
+        int r2 = std::min(BOARD_RADIUS, -q + BOARD_RADIUS);
+        for (int r = r1; r <= r2; r++) {
+            HexCell cell;
+            cell.q = q;
+            cell.r = r;
+            cell.value = ' ';
+            cells.push_back(cell);
+        }
+    }
+}
 
-// Makes a move if the cell is empty.
-bool HexBoard::makeMove(int row, int col, char player) {
-    if (board[row][col] == ' ') {
-        board[row][col] = player;
-        return true;
+bool HexBoard::makeMove(int q, int r, char player) {
+    // Find the cell with axial coordinates (q, r)
+    for (auto &cell : cells) {
+        if (cell.q == q && cell.r == r) {
+            if (cell.value == ' ') {
+                cell.value = player;
+                return true;
+            }
+            return false;
+        }
     }
     return false;
 }
 
-// Checks for a simple win condition: three in a row horizontally or vertically.
 char HexBoard::checkWinner() {
-    for (int i = 0; i < GRID_SIZE; ++i) {
-        for (int j = 0; j < GRID_SIZE; ++j) {
-            char player = board[i][j];
-            if (player == ' ') continue;
-            // Check horizontally.
-            if (j + 2 < GRID_SIZE && board[i][j + 1] == player && board[i][j + 2] == player)
-                return player;
-            // Check vertically.
-            if (i + 2 < GRID_SIZE && board[i + 1][j] == player && board[i + 2][j] == player)
-                return player;
+    // Axial neighbor directions for flat-topped hexagons.
+    // Standard offsets: { (1,0), (0,1), (-1,1), (-1,0), (0,-1), (1,-1) }
+    int directions[6][2] = {
+        {1, 0}, {0, 1}, {-1, 1},
+        {-1, 0}, {0, -1}, {1, -1}
+    };
+    // For each cell that is not empty, check in all 6 directions for 2 consecutive matching neighbors.
+    for (const auto &cell : cells) {
+        if (cell.value == ' ') continue;
+        for (int d = 0; d < 6; d++) {
+            int dq = directions[d][0];
+            int dr = directions[d][1];
+            int q1 = cell.q + dq, r1 = cell.r + dr;
+            int q2 = cell.q + 2 * dq, r2 = cell.r + 2 * dr;
+            char v1 = ' ', v2 = ' ';
+            bool found1 = false, found2 = false;
+            for (const auto &c : cells) {
+                if (c.q == q1 && c.r == r1) { v1 = c.value; found1 = true; }
+                if (c.q == q2 && c.r == r2) { v2 = c.value; found2 = true; }
+            }
+            if (found1 && found2 && v1 == cell.value && v2 == cell.value) {
+                std::cout << "Debug: Winning condition found: Cell (" << cell.q << "," << cell.r 
+                          << ") with value " << cell.value << " has consecutive neighbors at ("
+                          << q1 << "," << r1 << ") and (" << q2 << "," << r2 
+                          << ") in direction (" << dq << "," << dr << ")\n";
+                return cell.value;
+            }
         }
     }
     return ' ';
 }
 
-// Checks if the board is completely filled.
 bool HexBoard::isFull() {
-    for (const auto& row : board)
-        for (char cell : row)
-            if (cell == ' ')
-                return false;
+    for (const auto &cell : cells) {
+        if (cell.value == ' ')
+            return false;
+    }
     return true;
 }
 
-// Computes the position of a hexagon based on its row and column.
-// This uses an offset layout for the hex grid.
-sf::Vector2f HexBoard::getHexPosition(int row, int col) {
-    // Calculate the x offset. 1.5 factor spaces hexagons horizontally.
-    float xOffset = col * (HEX_SIZE * 1.5f);
-    // Calculate the y offset. The 1.732 factor (≈sqrt(3)) spaces them vertically.
-    // Offset every other column by half the hexagon height.
-    float yOffset = row * (HEX_SIZE * 1.732f) + (col % 2) * (HEX_SIZE * 0.866f);
-    return sf::Vector2f(xOffset, yOffset);
+std::vector<HexCell>& HexBoard::getCells() {
+    return cells;
 }
 
-// Creates and returns a hexagon shape given the position, size, and color.
-sf::CircleShape HexBoard::createHexagon(float x, float y, float size, sf::Color color) {
-    sf::CircleShape hex(size, 6);  // 6 points for a hexagon.
-    hex.setFillColor(color);
-    hex.setOutlineColor(sf::Color::Black);
-    hex.setOutlineThickness(2);
-    hex.setPosition(x, y);
-    // Set the origin to the center of the hexagon for proper positioning.
-    hex.setOrigin(size, size);
-    return hex;
+sf::Vector2f HexBoard::axialToPixel(int q, int r) {
+    // Conversion formula for flat-topped hexagons:
+    // x = HEX_SIZE * 3/2 * q
+    // y = HEX_SIZE * sqrt(3) * (r + q/2)
+    float x = HEX_SIZE * 1.5f * q;
+    float y = HEX_SIZE * std::sqrt(3) * (r + q / 2.0f);
+    return sf::Vector2f(x, y);
 }
 
-// Draws the hexagonal board to the provided render window.
-void HexBoard::draw(sf::RenderWindow& window) {
-    // Iterate over each cell in the board.
-    for (int i = 0; i < GRID_SIZE; ++i) {
-        for (int j = 0; j < GRID_SIZE; ++j) {
-            // Compute the position for the hexagon.
-            sf::Vector2f position = getHexPosition(i, j);
-            // Choose the color based on the cell content:
-            // 'X' uses AMU_RED, 'O' uses AMU_GREEN, empty uses AMU_WHITE.
-            sf::Color cellColor;
-            char cell = board[i][j];
-            if (cell == 'X') {
-                cellColor = AMU_RED;
-            } else if (cell == 'O') {
-                cellColor = AMU_GREEN;
-            } else {
-                cellColor = AMU_WHITE;
-            }
-            // Create the hexagon shape and draw it.
-            sf::CircleShape hex = createHexagon(position.x, position.y, HEX_SIZE, cellColor);
-            window.draw(hex);
-        }
+void HexBoard::draw(sf::RenderWindow& window, const sf::Vector2f& offset) {
+    for (const auto &cell : cells) {
+        sf::Vector2f pos = axialToPixel(cell.q, cell.r) + offset;
+        sf::CircleShape hex(HEX_SIZE, 6);
+        // Rotate 30° to get flat-topped hexagons.
+        hex.setRotation(30);
+        sf::Color fillColor;
+        if (cell.value == 'X')
+            fillColor = AMU_RED;
+        else if (cell.value == 'O')
+            fillColor = AMU_GREEN;
+        else
+            fillColor = AMU_WHITE;
+        hex.setFillColor(fillColor);
+        hex.setOutlineColor(sf::Color::Black);
+        hex.setOutlineThickness(2);
+        hex.setPosition(pos);
+        hex.setOrigin(HEX_SIZE, HEX_SIZE);
+        window.draw(hex);
     }
 }
