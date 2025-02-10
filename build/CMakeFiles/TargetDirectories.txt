@@ -1,0 +1,3 @@
+/home/fawwaz/tictactoe/build/CMakeFiles/rebuild_cache.dir
+/home/fawwaz/tictactoe/build/CMakeFiles/edit_cache.dir
+/home/fawwaz/tictactoe/build/CMakeFiles/hex_tic_tac_toe.dir

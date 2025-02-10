@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/Game.h
+HexBoard.h
+../include/HexBoard.h
+
+../include/HexBoard.h
+vector
+-
+SFML/Graphics.hpp
+-
+
+../include/UI.h
+SFML/Graphics.hpp
+-
+
+/home/fawwaz/tictactoe/src/Game.cpp
+Game.h
+/home/fawwaz/tictactoe/src/Game.h
+
+/home/fawwaz/tictactoe/src/HexBoard.cpp
+HexBoard.h
+/home/fawwaz/tictactoe/src/HexBoard.h
+
+/home/fawwaz/tictactoe/src/UI.cpp
+UI.h
+/home/fawwaz/tictactoe/src/UI.h
+
+/home/fawwaz/tictactoe/src/main.cpp
+Game.h
+/home/fawwaz/tictactoe/src/Game.h
+

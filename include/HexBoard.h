@@ -5,9 +5,14 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+const int GRID_SIZE = 5;
+const float HEX_SIZE = 50.0f;
+const float HEX_SPACING = 5.0f;
+extern sf::Color AMU_GREEN;
+extern sf::Color AMU_WHITE;
+
 class HexBoard {
 public:
-    static const int GRID_SIZE = 5; // 5x5 hexagonal grid
     HexBoard();
     bool makeMove(int row, int col, char player);
     char checkWinner();
@@ -17,6 +22,7 @@ public:
 private:
     std::vector<std::vector<char>> board;
     sf::CircleShape createHexagon(float x, float y, float size, sf::Color color);
+    sf::Vector2f getHexPosition(int row, int col);
 };
 
 #endif
