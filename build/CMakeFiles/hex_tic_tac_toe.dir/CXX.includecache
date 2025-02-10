@@ -9,6 +9,8 @@
 ../include/Game.h
 HexBoard.h
 ../include/HexBoard.h
+UI.h
+../include/UI.h
 
 ../include/HexBoard.h
 vector
@@ -20,9 +22,15 @@ SFML/Graphics.hpp
 SFML/Graphics.hpp
 -
 
+/home/fawwaz/tictactoe/src/Colors.cpp
+SFML/Graphics.hpp
+-
+
 /home/fawwaz/tictactoe/src/Game.cpp
 Game.h
 /home/fawwaz/tictactoe/src/Game.h
+Colors.cpp
+/home/fawwaz/tictactoe/src/Colors.cpp
 
 /home/fawwaz/tictactoe/src/HexBoard.cpp
 HexBoard.h
@@ -31,6 +39,8 @@ HexBoard.h
 /home/fawwaz/tictactoe/src/UI.cpp
 UI.h
 /home/fawwaz/tictactoe/src/UI.h
+iostream
+-
 
 /home/fawwaz/tictactoe/src/main.cpp
 Game.h

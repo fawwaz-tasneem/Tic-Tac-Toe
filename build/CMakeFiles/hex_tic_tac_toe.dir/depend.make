@@ -3,6 +3,8 @@
 
 CMakeFiles/hex_tic_tac_toe.dir/src/Game.cpp.o: ../include/Game.h
 CMakeFiles/hex_tic_tac_toe.dir/src/Game.cpp.o: ../include/HexBoard.h
+CMakeFiles/hex_tic_tac_toe.dir/src/Game.cpp.o: ../include/UI.h
+CMakeFiles/hex_tic_tac_toe.dir/src/Game.cpp.o: ../src/Colors.cpp
 CMakeFiles/hex_tic_tac_toe.dir/src/Game.cpp.o: ../src/Game.cpp
 
 CMakeFiles/hex_tic_tac_toe.dir/src/HexBoard.cpp.o: ../include/HexBoard.h
@@ -13,5 +15,6 @@ CMakeFiles/hex_tic_tac_toe.dir/src/UI.cpp.o: ../src/UI.cpp
 
 CMakeFiles/hex_tic_tac_toe.dir/src/main.cpp.o: ../include/Game.h
 CMakeFiles/hex_tic_tac_toe.dir/src/main.cpp.o: ../include/HexBoard.h
+CMakeFiles/hex_tic_tac_toe.dir/src/main.cpp.o: ../include/UI.h
 CMakeFiles/hex_tic_tac_toe.dir/src/main.cpp.o: ../src/main.cpp
 

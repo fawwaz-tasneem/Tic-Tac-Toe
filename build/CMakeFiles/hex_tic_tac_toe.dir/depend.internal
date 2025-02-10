@@ -4,6 +4,8 @@
 CMakeFiles/hex_tic_tac_toe.dir/src/Game.cpp.o
  ../include/Game.h
  ../include/HexBoard.h
+ ../include/UI.h
+ /home/fawwaz/tictactoe/src/Colors.cpp
  /home/fawwaz/tictactoe/src/Game.cpp
 CMakeFiles/hex_tic_tac_toe.dir/src/HexBoard.cpp.o
  ../include/HexBoard.h
@@ -14,4 +16,5 @@ CMakeFiles/hex_tic_tac_toe.dir/src/UI.cpp.o
 CMakeFiles/hex_tic_tac_toe.dir/src/main.cpp.o
  ../include/Game.h
  ../include/HexBoard.h
+ ../include/UI.h
  /home/fawwaz/tictactoe/src/main.cpp
