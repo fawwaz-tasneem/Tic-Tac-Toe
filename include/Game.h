@@ -18,9 +18,16 @@ private:
     char currentPlayer;
     bool gameOver;
     std::string winnerText;
-    sf::Vector2f boardOffset; // Offset to center the board in the window
-    float boardWidth;         // Width of the board’s bounding box
-    float boardHeight;        // Height of the board’s bounding box
+    sf::Vector2f boardOffset; // Offset to center the board in the designated UI area.
+    float boardWidth;         // Width of the board’s bounding box.
+    float boardHeight;        // Height of the board’s bounding box.
+    sf::Color bgColor;        // Background color (toggled with 'B').
+    sf::Clock animationClock; // Clock for winner animation.
+    sf::Clock gameClock;      // Clock for elapsed game time.
+    
+    // Recalculate board offset based on the current window size.
+    void recalcBoardOffset();
+    
     void handleClick(int x, int y);
     void draw();
 };
