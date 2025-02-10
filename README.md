@@ -58,7 +58,8 @@ Hex Tic Tac Toe is a C++ game built using [SFML](https://www.sfml-dev.org/) that
 
 3. **Run the Game:**
    ```bash
-   ./hex_tic_tac_toe
+   cd ..
+   build/hex_tic_tac_toe
    ```
 
 ### Manual Compilation (Linux/macOS)
