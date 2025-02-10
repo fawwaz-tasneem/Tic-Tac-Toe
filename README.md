@@ -1,6 +1,3 @@
-Below is the complete code for your **README.md** file:
-
-```markdown
 # Hex Tic Tac Toe
 
 Hex Tic Tac Toe is a C++ game built using [SFML](https://www.sfml-dev.org/) that reimagines the classic tic tac toe game on a hexagonal honeycomb board. The board features a central hexagon, a ring of 6 hexagons around it, and an outer ring of 12 hexagons—making a total of 19 cells. The game includes a polished UI with animated winner text, a timer, background toggle, and various UI enhancements.
